@@ -1,0 +1,35 @@
+application:
+  configuration:
+    configuration.admin-password: "123qwe456rty"
+  interfaces:
+    configuration:
+      "*": bind(mysql#configuration.*)
+    database:
+      database-host:           bind(mysql#mysql.database-host)
+      database-port:           bind(mysql#mysql.database-port)
+      database-admin-username: bind(mysql#mysql.database-admin-username)
+      database-admin-password: bind(mysql#mysql.database-admin-password)
+  components:
+    mysql:
+      type: docker.Container
+      interfaces:
+        configuration:
+          admin-password: configuration(string)
+        mysql:
+          database-host:           publish-signal(string)
+          database-port:           publish-signal(int)
+          database-admin-username: publish-signal(string)
+          database-admin-password: publish-signal(string)
+          container-id:            publish-signal(string)
+      configuration:
+        docker.image: "tutum/mysql"
+        docker.expose:
+          "3306": "*"
+        docker.environment:
+          MYSQL_PASS: "{$.configuration.admin-password}"
+        docker.signals:
+          mysql.database-host:           "{$.docker.ports.3306.host}"
+          mysql.database-port:           "{$.docker.ports.3306.port}"
+          mysql.database-admin-username: "admin"
+          mysql.database-admin-password: "{$.configuration.admin-password}"
+          mysql.container-id:            "{$.docker.name}"
