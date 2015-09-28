@@ -14,13 +14,25 @@ application:
       type: docker.Container
       interfaces:
         configuration:
-          admin-password: configuration(string)
+          admin-password: 
+            name: "Admin Password"
+            type: configuration(string)
         mysql:
-          database-host:           publish-signal(string)
-          database-port:           publish-signal(int)
-          database-admin-username: publish-signal(string)
-          database-admin-password: publish-signal(string)
-          container-id:            publish-signal(string)
+          database-host:           
+            name: "Database Host"
+            type: publish-signal(string)
+          database-port:           
+            name: "Database Port"
+            type: publish-signal(int)
+          database-admin-username: 
+            name: "Database Admin User"
+            type: publish-signal(string)
+          database-admin-password: 
+            name: "Database Admin Password"
+            type: publish-signal(string)
+          container-id:            
+            name: "Container ID"
+            type: publish-signal(string)
       configuration:
         docker.image: "tutum/mysql"
         docker.expose:
