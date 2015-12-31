@@ -1,6 +1,7 @@
 application:
   configuration:
     configuration.admin-password: "123qwe456rty"
+    configuration.docker-image-id: "tutum/mysql"
   interfaces:
     configuration:
       "*": bind(mysql#configuration.*)
@@ -17,6 +18,9 @@ application:
           admin-password: 
             name: "Admin Password"
             type: configuration(string)
+          docker-image-id:
+            name: "Docker Image ID"
+            type: configuration(string)
         mysql:
           database-host:           
             name: "Database Host"
@@ -31,10 +35,13 @@ application:
             name: "Database Admin Password"
             type: publish-signal(string)
           container-id:            
-            name: "Container ID"
+            name: "Docker Container ID"
+            type: publish-signal(string)
+          docker-image-id:
+            name: "Docker Image ID"
             type: publish-signal(string)
       configuration:
-        docker.image: "tutum/mysql"
+        docker.image: "{$.configuration.docker-image-id}"
         docker.expose:
           "3306": "*"
         docker.environment:
@@ -45,3 +52,4 @@ application:
           mysql.database-admin-username: "admin"
           mysql.database-admin-password: "{$.configuration.admin-password}"
           mysql.container-id:            "{$.docker.name}"
+          mysql.docker-image-id:         "{$.configuration.docker-image-id}"
