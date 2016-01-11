@@ -35,11 +35,15 @@ application:
             name: "Database Admin Password"
             type: publish-signal(string)
           container-id:            
-            name: "Docker Container ID"
+            name: "Container ID"
             type: publish-signal(string)
+        docker-container:
           docker-image-id:
-            name: "Docker Image ID"
             type: publish-signal(string)
+            name: "Docker Image ID"
+          docker-container-name: 
+            type: publish-signal(string)
+            name: "Docker Container Name"
       configuration:
         docker.image: "{$.configuration.docker-image-id}"
         docker.expose:
@@ -52,4 +56,5 @@ application:
           mysql.database-admin-username: "admin"
           mysql.database-admin-password: "{$.configuration.admin-password}"
           mysql.container-id:            "{$.docker.name}"
-          mysql.docker-image-id:         "{$.configuration.docker-image-id}"
+          docker-container.docker-image-id:     "{$.configuration.docker-image-id}"
+          docker-container.docker-container-namer: "{$.docker.name}"
